@@ -24,17 +24,64 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 **Procedure**
 
-/* write all the steps invloved */
+1. Type the program in Quartus software.
+
+2. Compile and run the program.
+
+3. Generate the RTL schematic and save the logic diagram.
+
+4. Create nodes for inputs and outputs to generate the timing diagram.
+  
+5. For different input combinations generate the timing diagram.
 
 **PROGRAM**
 
 /* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
 
- Developed by: RegisterNumber:
+```
+module ripple (
+    input clk,    
+    input reset,   
+    output [3:0] q 
+);
+    reg [3:0] q_int;
+
+    assign q = q_int;
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) 
+            q_int[0] <= 1'b0; 
+        else 
+            q_int[0] <= ~q_int[0]; 
+    end
+
+    // Generate the other flip-flops based on the output of the previous one
+    genvar i;
+    generate
+        for (i = 1; i < 4; i = i + 1) begin : ripple
+            always @(posedge q_int[i-1] or posedge reset) begin
+                if (reset) 
+                    q_int[i] <= 1'b0; 
+                else 
+                    q_int[i] <= ~q_int[i]; 
+            end
+        end
+    endgenerate
+endmodule
+```
+
+ Developed by: SREE GOVIND SA
+ 
+ RegisterNumber:24900123
 */
 
 **RTL LOGIC FOR 4 Bit Ripple Counter**
+![Screenshot 2024-12-28 181104](https://github.com/user-attachments/assets/de0fc385-3d81-47bf-b266-a99a8705f878)
+
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
+![Screenshot 2024-12-28 181231](https://github.com/user-attachments/assets/72fbdea7-c2d3-437e-8305-759ea7ea655c)
 
 **RESULTS**
+
+Thus the 4 Bit Ripple Counter using verilog is implemented and their functionality using their functional tables is validated.
